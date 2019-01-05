@@ -1,28 +1,27 @@
-.App {
-  text-align: center;
+/* * COLORS */
+/* * ORANGE: #e3780c  */
+/* * RED: #f13535  */
+/* * BLUE: #004b91  */
+/* * TAN (BG): #efe2ba  */
+/* * LIGHTGRAY: #efefef  */
+
+html,
+body {
+  margin: 0;
+  background-color: #f1f0ea;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+a,
+a:link,
+a:visited {
+  text-decoration: none;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+.active {
+  text-decoration: overline !important;
+  text-decoration-color: #e3780c !important;
 }
 
-.App-title {
-  font-size: 1.5em;
-}
-
-.App-intro {
-  font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.brand-name {
+  text-shadow: 1px 1px 3px black;
 }

@@ -1,9 +1,99 @@
 import React, { Component } from 'react';
+import { Container, Box, Heading, Card, Image, Text } from 'gestalt';
+import { Link } from 'react-router-dom';
 import './App.css';
+import Strapi from 'strapi-sdk-javascript/build/main';
+
+const apiUrl = process.env.API_URL || 'http://localhost:1337';
+const strapi = new Strapi(apiUrl);
 
 class App extends Component {
+  state = {
+    brands: []
+  };
+
+  async componentDidMount() {
+    try {
+      const response = await strapi.request('POST', '/graphql', {
+        data: {
+          query: `query {
+            brands {
+              _id
+              name
+              description
+              image {
+                url
+              }
+            }
+          }`
+        }
+      });
+      this.setState({
+        brands: response.data.brands
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   render() {
-    return <div>App</div>;
+    const { brands } = this.state;
+    return (
+      <Container>
+        {/* BRANDS SECTION */}
+        <Box display="flex" justifyContent="center" margin={2}>
+          {/* BRANDS HEADER */}
+          <Heading color="navy" size="md">
+            Brew Brands
+          </Heading>
+        </Box>
+        {/* BRANDS */}
+        <Box
+          dangerouslySetInlineStyle={{
+            __style: {
+              backgroundColor: '#e3780c'
+            }
+          }}
+          shape="rounded"
+          wrap
+          display="flex"
+          justifyContent="around"
+        >
+          {brands.map(brand => (
+            <Box paddingY={4} margin={2} width={200} key={brand._id}>
+              <Card
+                image={
+                  <Box height={200} width={200}>
+                    <Image
+                      fit="cover"
+                      alt="Brand"
+                      naturalHeight={1}
+                      naturalWidth={1}
+                      src={`${apiUrl}${brand.image.url}`}
+                    />
+                  </Box>
+                }
+              >
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  direction="column"
+                >
+                  <Text bold size="xl">
+                    {brand.name}
+                  </Text>
+                  <Text>{brand.description}</Text>
+                  <Text bold size="xl">
+                    <Link to={`/${brand._id}`}>See Brews</Link>
+                  </Text>
+                </Box>
+              </Card>
+            </Box>
+          ))}
+        </Box>
+      </Container>
+    );
   }
 }
 

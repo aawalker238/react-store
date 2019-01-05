@@ -1,0 +1,21 @@
+{
+  "defaultConnection": "default",
+  "connections": {
+    "default": {
+      "connector": "strapi-hook-mongoose",
+      "settings": {
+        "client": "mongo",
+        "host": "ds045785.mlab.com",
+        "srv": false,
+        "port": "45785",
+        "database": "big-brewther",
+        "username": "aawalker238",
+        "password": "Isaiah358"
+      },
+      "options": {
+        "authenticationDatabase": "big-brewther",
+        "ssl": false
+      }
+    }
+  }
+}
