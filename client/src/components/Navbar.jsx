@@ -29,7 +29,7 @@ const Navbar = () => (
           />
         </Box>
 
-        <Heading size="xs" color="watermelon" className="brand-name">
+        <Heading size="xs" color="white" className="brand-name">
           Big Brewther
         </Heading>
       </Box>
