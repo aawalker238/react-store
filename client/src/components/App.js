@@ -136,8 +136,8 @@ class App extends Component {
           justifyContent="around"
         >
           {brands.map(brand => (
-            <Link to={`/${brand._id}`}>
-              <Box paddingY={4} margin={2} width={200} key={brand._id}>
+            <Link to={`/${brand._id}`} key={brand._id}>
+              <Box paddingY={4} margin={2} width={200}>
                 <Card
                   image={
                     <Box height={200} width={200}>

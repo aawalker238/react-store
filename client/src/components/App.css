@@ -12,6 +12,16 @@ body {
   padding-bottom: 2rem;
 }
 
+p,
+div,
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: 'Kurale', serif !important;
+}
+
 a,
 a:link,
 a:visited {

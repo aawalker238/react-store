@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Box, Text, Heading, Image, Button } from 'gestalt';
+import { Box, Text, Heading, Image, Button, Sticky } from 'gestalt';
 import { NavLink, withRouter } from 'react-router-dom';
 import { getToken, clearToken, clearCart } from '../utils';
 
@@ -20,46 +20,48 @@ class Navbar extends Component {
 }
 
 const AuthNav = ({ handleSignout }) => (
-  <Box
-    display="flex"
-    alignItems="center"
-    height={100}
-    padding={1}
-    shape="square"
-    color="navy"
-    justifyContent="around"
-  >
-    {/* Checkout link */}
-    <NavLink activeClassName="active" to="/checkout">
-      <Text size="xl" color="white">
-        Checkout
-      </Text>
-    </NavLink>
-    <NavLink activeClassName="active" exact to="/">
-      <Box display="flex" alignItems="center">
-        <Box margin={2} height={40} width={40}>
-          <Image
-            naturalHeight={1}
-            naturalWidth={1}
-            alt="Big Brewther"
-            src="./icons/brewther-logo.png"
-          />
-        </Box>
+  <Sticky top={0}>
+    <Box
+      display="flex"
+      alignItems="center"
+      height={100}
+      padding={1}
+      shape="square"
+      color="navy"
+      justifyContent="around"
+    >
+      {/* Checkout link */}
+      <NavLink activeClassName="active" to="/checkout">
+        <Text size="xl" color="white">
+          Checkout
+        </Text>
+      </NavLink>
+      <NavLink activeClassName="active" exact to="/">
+        <Box display="flex" alignItems="center">
+          <Box margin={2} height={40} width={40}>
+            <Image
+              naturalHeight={1}
+              naturalWidth={1}
+              alt="Big Brewther"
+              src="./icons/brewther-logo.png"
+            />
+          </Box>
 
-        <Heading size="xs" color="white" className="brand-name">
-          Big Brewther
-        </Heading>
-      </Box>
-    </NavLink>
-    {/* SIGNOUT BUTTON */}
-    <Button
-      onClick={handleSignout}
-      color="transparent"
-      text="Sign Out"
-      inline
-      size="md"
-    />
-  </Box>
+          <Heading size="xs" color="white" className="brand-name">
+            Big Brewther
+          </Heading>
+        </Box>
+      </NavLink>
+      {/* SIGNOUT BUTTON */}
+      <Button
+        onClick={handleSignout}
+        color="transparent"
+        text="Sign Out"
+        inline
+        size="md"
+      />
+    </Box>
+  </Sticky>
 );
 
 const UnAtuhNav = () => (
