@@ -25,7 +25,7 @@ const AuthNav = ({ handleSignout }) => (
     alignItems="center"
     height={100}
     padding={1}
-    shape="roundedBottom"
+    shape="square"
     color="navy"
     justifyContent="around"
   >

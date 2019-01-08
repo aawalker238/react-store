@@ -64,7 +64,8 @@ class _CheckoutForm extends Component {
       city,
       address,
       postalCode,
-      stateAbbreviation
+      stateAbbreviation,
+      confirmationEmailAddress
     } = this.state;
 
     const amount = calculateAmount(cartItems);
@@ -86,6 +87,14 @@ class _CheckoutForm extends Component {
         stateAbbreviation,
         address,
         token
+      });
+      await strapi.request('POST', '/email', {
+        data: {
+          to: confirmationEmailAddress,
+          subject: `Big Brewther - Order Confirmation ${new Date(Date.now())}`,
+          text: 'Your order has been processed.',
+          html: '<b>Expect you order to ship within 2-3 business days.</b>'
+        }
       });
       this.setState({
         orderProcessing: false,

@@ -12,6 +12,7 @@ import {
 } from 'gestalt';
 import { calculatePrice, setCart, getCart } from '../utils';
 import { Link } from 'react-router-dom';
+import Loader from './Loader';
 const apiUrl = process.env.API_URL || 'http://localhost:1337';
 const strapi = new Strapi(apiUrl);
 
@@ -100,62 +101,66 @@ class Brews extends Component {
             <Heading color="orchid">{brand}</Heading>
           </Box>
           {/* BREWS */}
-          <Box
-            dangerouslySetInlineStyle={{
-              __style: {
-                backgroundColor: '#bdcdd9'
-              }
-            }}
-            wrap
-            shape="rounded"
-            display="flex"
-            justifyContent="center"
-            padding={4}
-          >
-            {brews.map(brew => (
-              <Box paddingY={4} margin={2} width={210} key={brew._id}>
-                <Card
-                  image={
-                    <Box height={250} width={200}>
-                      <Image
-                        fit="cover"
-                        alt="Brand"
-                        naturalHeight={1}
-                        naturalWidth={1}
-                        src={`${apiUrl}${brew.image.url}`}
-                      />
-                    </Box>
-                  }
-                >
-                  <Box
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                    direction="column"
-                  >
-                    <Box marginBottom={2}>
-                      <Text bold size="xl">
-                        {brew.name}
-                      </Text>
-                    </Box>
-
-                    <Text>{brew.description}</Text>
-                    <Text color="orchid">${brew.price}</Text>
-
-                    <Box marginTop={2}>
-                      <Text bold size="xl">
-                        <Button
-                          onClick={() => this.addToCart(brew)}
-                          color="blue"
-                          text="Add to Cart"
+          {brews.length > 0 ? (
+            <Box
+              dangerouslySetInlineStyle={{
+                __style: {
+                  backgroundColor: '#bdcdd9'
+                }
+              }}
+              wrap
+              shape="rounded"
+              display="flex"
+              justifyContent="center"
+              padding={4}
+            >
+              {brews.map(brew => (
+                <Box paddingY={4} margin={2} width={210} key={brew._id}>
+                  <Card
+                    image={
+                      <Box height={250} width={200}>
+                        <Image
+                          fit="cover"
+                          alt="Brand"
+                          naturalHeight={1}
+                          naturalWidth={1}
+                          src={`${apiUrl}${brew.image.url}`}
                         />
-                      </Text>
+                      </Box>
+                    }
+                  >
+                    <Box
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      direction="column"
+                    >
+                      <Box marginBottom={2}>
+                        <Text bold size="xl">
+                          {brew.name}
+                        </Text>
+                      </Box>
+
+                      <Text>{brew.description}</Text>
+                      <Text color="orchid">${brew.price}</Text>
+
+                      <Box marginTop={2}>
+                        <Text bold size="xl">
+                          <Button
+                            onClick={() => this.addToCart(brew)}
+                            color="blue"
+                            text="Add to Cart"
+                          />
+                        </Text>
+                      </Box>
                     </Box>
-                  </Box>
-                </Card>
-              </Box>
-            ))}
-          </Box>
+                  </Card>
+                </Box>
+              ))}
+            </Box>
+          ) : (
+            <Loader show={true} />
+          )}
         </Box>
 
         {/* USER CART */}
@@ -171,7 +176,7 @@ class Brews extends Component {
                 Your Cart
               </Heading>
               <Text color="gray">{cartItems.length} items selected</Text>
-              {/* TODO: CART ITEMS */}
+              {/* CART ITEMS */}
               {cartItems.map(item => (
                 <Box key={item._id} display="flex" alignItems="center">
                   <Text>

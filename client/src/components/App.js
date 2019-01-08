@@ -53,22 +53,48 @@ class App extends Component {
   }
 
   handleChange = ({ value }) => {
-    this.setState({
-      searchTerm: value
-    });
+    this.setState(
+      {
+        searchTerm: value
+      },
+      () => this.searchBrands()
+    );
   };
 
-  filterBrands = ({ searchTerm, brands }) => {
-    return brands.filter(brand => {
-      return (
-        brand.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        brand.description.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+  // filterBrands = ({ searchTerm, brands }) => {
+  //   return brands.filter(brand => {
+  //     return (
+  //       brand.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //       brand.description.toLowerCase().includes(searchTerm.toLowerCase())
+  //     );
+  //   });
+  // };
+
+  searchBrands = async () => {
+    const response = await strapi.request('POST', '/graphql', {
+      data: {
+        query: `query {
+          brands(where: {
+            name_contains: "${this.state.searchTerm}"
+          }) {
+            _id
+              name
+              description
+              image {
+                url
+              }
+          }
+        }`
+      }
+    });
+    this.setState({
+      brands: response.data.brands,
+      loadingBrands: false
     });
   };
 
   render() {
-    const { searchTerm, loadingBrands } = this.state;
+    const { searchTerm, loadingBrands, brands } = this.state;
     return (
       <Container>
         {/* Brand Search Field */}
@@ -104,42 +130,44 @@ class App extends Component {
               backgroundColor: '#e3780c'
             }
           }}
-          shape="rounded"
+          shape="square"
           wrap
           display="flex"
           justifyContent="around"
         >
-          {this.filterBrands(this.state).map(brand => (
-            <Box paddingY={4} margin={2} width={200} key={brand._id}>
-              <Card
-                image={
-                  <Box height={200} width={200}>
-                    <Image
-                      fit="cover"
-                      alt="Brand"
-                      naturalHeight={1}
-                      naturalWidth={1}
-                      src={`${apiUrl}${brand.image.url}`}
-                    />
-                  </Box>
-                }
-              >
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  direction="column"
+          {brands.map(brand => (
+            <Link to={`/${brand._id}`}>
+              <Box paddingY={4} margin={2} width={200} key={brand._id}>
+                <Card
+                  image={
+                    <Box height={200} width={200}>
+                      <Image
+                        fit="cover"
+                        alt="Brand"
+                        naturalHeight={1}
+                        naturalWidth={1}
+                        src={`${apiUrl}${brand.image.url}`}
+                      />
+                    </Box>
+                  }
                 >
-                  <Text bold size="xl">
-                    {brand.name}
-                  </Text>
-                  <Text>{brand.description}</Text>
-                  <Text bold size="xl">
-                    <Link to={`/${brand._id}`}>See Brews</Link>
-                  </Text>
-                </Box>
-              </Card>
-            </Box>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    direction="column"
+                  >
+                    <Text bold size="xl">
+                      {brand.name}
+                    </Text>
+                    <Text>{brand.description}</Text>
+                    <Text bold size="xl">
+                      See Brews
+                    </Text>
+                  </Box>
+                </Card>
+              </Box>
+            </Link>
           ))}
         </Box>
         <Loader show={loadingBrands} />
